@@ -218,6 +218,12 @@ public class IabHelper {
             public void onServiceConnected(ComponentName name, IBinder service) {
                 if (mDisposed) return;
                 logDebug("Billing service connected.");
+                if (!"ir.mservices.market".equals(name.getPackageName())) {
+                    logDebug("Target package is not who claim it is... exiting");
+                    return;
+                } else {
+                    mService = IInAppBillingService.Stub.asInterface(service);
+                }
                 mService = IInAppBillingService.Stub.asInterface(service);
                 String packageName = mContext.getPackageName();
                 try {
